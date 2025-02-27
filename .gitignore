@@ -33,5 +33,10 @@ yarn-error.log*
 
 # Logs
 *.log
+*storybook.log
+
+# forcing
+package.json
 
 ## BACKEND
+
