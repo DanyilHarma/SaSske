@@ -4,8 +4,11 @@ FROM node:18-alpine
 # Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
+# Устанавливаем NODE_ENV в development
+ENV NODE_ENV=development
+
 # Копируем файлы package.json и package-lock.json в контейнер
-COPY package*.json ./
+COPY package*.json package-lock.json ./
 
 # Устанавливаем зависимости
 RUN npm install
@@ -20,4 +23,4 @@ RUN npm run build
 EXPOSE 5000
 
 # Запускаем сервер
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
