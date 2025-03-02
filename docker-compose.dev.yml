@@ -1,0 +1,76 @@
+###################################################
+# Docker Compose Configuration for Backend
+#
+# This file defines the backend infrastructure,
+# including PostgreSQL as the database and 
+# the Node.js backend service.
+###################################################
+
+version: '3.8'
+
+services:
+
+  ###################################################
+  # PostgreSQL Database Service
+  #
+  # - Uses the official PostgreSQL image.
+  # - Stores data in a named volume for persistence.
+  # - Exposes port 5432 for database connections.
+  ###################################################
+  db:
+    image: postgres:16-alpine
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  ###################################################
+  # Backend Service (Node.js + Express)
+  #
+  # - Runs our backend API inside a Docker container.
+  # - Uses the "depends_on" directive to ensure 
+  #   PostgreSQL starts first.
+  # - Exposes port 5000 for API requests.
+  ###################################################
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules  # Чтобы не затереть зависимости
+    command: npm run dev  # Автообновление кода
+
+  # Frontend Service (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev  # Запускаем Next.js в режиме разработки
+###################################################
+# Named Volumes
+#
+# These volumes persist data across container restarts.
+###################################################
+volumes:
+  postgres_data:
