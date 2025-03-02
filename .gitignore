@@ -1,3 +1,6 @@
+## Environment
+.env
+
 ## FRONTEND
 # Node.js dependencies
 /frontend/node_modules/
@@ -37,11 +40,11 @@ yarn-error.log*
 
 # forcing
 /package.json
+Makefile
 
 ## BACKEND
 /backend/node_modules
 /backend/dist
-/backend/.env
 /backend/.DS_Store
 /backend/*.log
 /backend/debug.log
