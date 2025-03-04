@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom/client";
+import "../index.css";
 
 const Popup = () => {
     return <h1>Hello from Popup!</h1>;
