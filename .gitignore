@@ -51,3 +51,10 @@ Makefile
 /backend/npm-debug.log*
 # Prisma
 *_lock.toml
+
+## EXTENSION 
+/extension/node_modules
+/extension/dist
+/extension/.vite
+/extension/.idea
+/extension/.DS_Store
