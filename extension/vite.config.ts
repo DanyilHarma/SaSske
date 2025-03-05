@@ -9,10 +9,8 @@ export default defineConfig({
         tailwindcss(),
         viteStaticCopy({
             targets: [
-                {
-                    src: "manifest.json",
-                    dest: ".",
-                },
+                { src: "manifest.json", dest: "." },
+                { src: "src/popup/popup.html", dest: "." },
             ],
         }),
     ],
@@ -20,7 +18,7 @@ export default defineConfig({
         outDir: "dist",
         rollupOptions: {
             input: {
-                popup: "src/popup/popup.html",
+                popup: "src/popup/popup.tsx",
                 background: "src/background/background.ts",
                 content: "src/content/content.ts",
             },
