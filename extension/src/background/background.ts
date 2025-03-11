@@ -1,3 +1,24 @@
+// Следим за переключением вкладок
+chrome.tabs.onActivated.addListener((activeInfo) => {
+    chrome.tabs.get(activeInfo.tabId, (tab) => {
+        if (tab.url) {
+            const domain = new URL(tab.url).hostname;
+            chrome.storage.local.set({ lastVisitedSite: domain });
+            chrome.tabs.sendMessage(activeInfo.tabId, { type: "UPDATE_SITE", site: domain }, () => {
+                if (chrome.runtime.lastError) {
+                    console.warn(
+                        "Контент-скрипт не получил UPDATE_SITE:",
+                        chrome.runtime.lastError.message,
+                    );
+                } else {
+                    console.log("Контент-скрипт принял UPDATE_SITE");
+                }
+            });
+            console.log(`🌍 Переключение на: ${domain}`);
+        }
+    });
+});
+
 // Следим за фокусом браузера
 chrome.windows.onFocusChanged.addListener((windowId) => {
     const isBrowserActive = windowId !== chrome.windows.WINDOW_ID_NONE;

@@ -5,12 +5,13 @@
     "description": "Расширение для отслеживания времени на сайтах",
     "permissions": ["tabs", "storage"],
     "background": {
-        "service_worker": "scripts/background.js"
+        "service_worker": "scripts/background.js",
+        "type": "module"
     },
     "host_permissions": ["*://*/*"],
     "content_scripts": [
         {
-            "matches": ["*://*/*"],
+            "matches": ["<all_urls>"],
             "js": ["scripts/content.js"]
         }
     ],
