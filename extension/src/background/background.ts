@@ -1,3 +1,10 @@
+// Следим за фокусом браузера
+chrome.windows.onFocusChanged.addListener((windowId) => {
+    const isBrowserActive = windowId !== chrome.windows.WINDOW_ID_NONE;
+    chrome.storage.local.set({ browserActive: isBrowserActive });
+    console.log(isBrowserActive ? "▶️ Браузер в фокусе" : "⏸ Браузер свёрнут");
+});
+
 chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
     if (message.type === "GET_ACTIVE_SITE") {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
