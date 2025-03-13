@@ -1,3 +1,5 @@
+import { sendMessageToTab } from "../helpers/messageHelper";
+
 const STORAGE_KEYS = {
     globalPause: "trackerPaused",
     pausedSites: "pausedSites",
@@ -19,7 +21,7 @@ export const toggleTracker = async (paused: boolean): Promise<void> => {
     chrome.tabs.query({}, (tabs) => {
         tabs.forEach((tab) => {
             if (tab.id) {
-                chrome.tabs.sendMessage(tab.id, { type: "TRACKER_PAUSED", paused });
+                sendMessageToTab(tab.id, { type: "TRACKER_PAUSED", paused });
             }
         });
     });
@@ -45,7 +47,7 @@ export const toggleSiteTracking = async (site: string, paused: boolean): Promise
     chrome.tabs.query({}, (tabs) => {
         tabs.forEach((tab) => {
             if (tab.id) {
-                chrome.tabs.sendMessage(tab.id, { type: "SITE_TRACKING_UPDATED", site, paused });
+                sendMessageToTab(tab.id, { type: "SITE_TRACKING_UPDATED", site, paused });
             }
         });
     });
