@@ -1,3 +1,5 @@
+import { isTrackerPaused, toggleTracker } from "./services/trackerService";
+
 // Следим за переключением вкладок
 chrome.tabs.onActivated.addListener((activeInfo) => {
     chrome.tabs.get(activeInfo.tabId, (tab) => {
@@ -59,3 +61,19 @@ function saveTime(site: string, timeSpent: number) {
         });
     });
 }
+
+// Обрабатываем сообщения из popup.tsx об остановке глобального трекера
+chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
+    console.log("🔽 Получено сообщение в background:", message);
+    if (message.type === "PAUSE_TRACKER") {
+        toggleTracker(message.paused).then(() => sendResponse({ success: true }));
+        return true;
+    }
+
+    if (message.type === "GET_TRACKER_STATE") {
+        isTrackerPaused().then((paused) => {
+            sendResponse({ paused });
+        });
+        return true;
+    }
+});
