@@ -11,16 +11,17 @@ export default defineConfig({
             targets: [
                 { src: "manifest.json", dest: "." },
                 { src: "src/popup/popup.html", dest: "." },
+                { src: "public/assets/*", dest: "assets" },
             ],
         }),
     ],
     build: {
         outDir: "dist",
+        emptyOutDir: true,
         rollupOptions: {
             input: {
                 popup: "src/popup/popup.tsx",
                 background: "src/background/background.ts",
-                content: "src/content/content.ts",
             },
             output: {
                 entryFileNames: "scripts/[name].js",
