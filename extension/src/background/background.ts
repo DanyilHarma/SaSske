@@ -1,4 +1,9 @@
-import { isTrackerPaused, toggleTracker } from "./services/trackerService";
+import {
+    getPausedSites,
+    isTrackerPaused,
+    toggleSiteTracking,
+    toggleTracker,
+} from "./services/trackerService";
 
 // Следим за переключением вкладок
 chrome.tabs.onActivated.addListener((activeInfo) => {
@@ -74,6 +79,18 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
         isTrackerPaused().then((paused) => {
             sendResponse({ paused });
         });
+        return true;
+    }
+
+    if (message.type === "PAUSE_SITE") {
+        toggleSiteTracking(message.site, message.paused).then(() =>
+            sendResponse({ success: true }),
+        );
+        return true;
+    }
+
+    if (message.type === "GET_PAUSED_SITES") {
+        getPausedSites().then((sites) => sendResponse({ pausedSites: sites }));
         return true;
     }
 });
