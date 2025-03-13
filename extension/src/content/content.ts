@@ -7,6 +7,18 @@ const INACTIVITY_THRESHOLD = 3 * 60 * 1000; // 3 минут
 const SAVE_INTERVAL = 30 * 1000; // Сохраняем раз в пол минуты
 let currentSite: string | null = null;
 let isActiveTab: boolean = true;
+let trackerPaused = false;
+
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === "TRACKER_PAUSED") {
+        trackerPaused = message.paused;
+        console.log(`⏸ Трекер ${trackerPaused ? "остановлен" : "включен"}`);
+    }
+});
+
+chrome.runtime.sendMessage({ type: "GET_TRACKER_STATE" }, (response) => {
+    trackerPaused = response?.paused || false;
+});
 
 chrome.runtime.sendMessage({ type: "GET_ACTIVE_SITE" }, (response) => {
     if (response?.site) {
@@ -28,7 +40,8 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 const throttledUpdateInteractionTime = throttle(() => {
-    if (!isActiveTab) return;
+    if (trackerPaused || !isActiveTab) return;
+
     const now = Date.now();
     if (now - lastInteraction >= INACTIVITY_THRESHOLD) {
         lastUpdate = now;
