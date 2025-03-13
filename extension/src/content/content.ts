@@ -8,11 +8,41 @@ const SAVE_INTERVAL = 30 * 1000; // Сохраняем раз в пол мину
 let currentSite: string | null = null;
 let isActiveTab: boolean = true;
 let trackerPaused = false;
+let pausedSites: string[] = [];
+
+chrome.runtime.sendMessage({ type: "GET_PAUSED_SITES" }, (response) => {
+    pausedSites = response?.pausedSites ?? [];
+});
+
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === "SITE_TRACKING_UPDATED") {
+        if (message.paused) {
+            pausedSites.push(message.site);
+        } else {
+            pausedSites = pausedSites.filter((s) => s !== message.site);
+        }
+        console.log(`🔹 Обновлен список заблокированных сайтов: ${pausedSites}`);
+    }
+});
+
+chrome.storage.onChanged.addListener((changes) => {
+    if (changes.trackerPaused) {
+        trackerPaused = changes.trackerPaused.newValue;
+    }
+    if (changes.pausedSites) {
+        pausedSites = changes.pausedSites.newValue;
+    }
+});
 
 chrome.runtime.onMessage.addListener((message) => {
     if (message.type === "TRACKER_PAUSED") {
         trackerPaused = message.paused;
         console.log(`⏸ Трекер ${trackerPaused ? "остановлен" : "включен"}`);
+    }
+    if (!trackerPaused) {
+        lastInteraction = Date.now();
+        lastUpdate = Date.now();
+        activeTime = 0;
     }
 });
 
@@ -40,7 +70,7 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 const throttledUpdateInteractionTime = throttle(() => {
-    if (trackerPaused || !isActiveTab) return;
+    if (trackerPaused || !isActiveTab || (currentSite && pausedSites.includes(currentSite))) return;
 
     const now = Date.now();
     if (now - lastInteraction >= INACTIVITY_THRESHOLD) {
