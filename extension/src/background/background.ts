@@ -1,3 +1,4 @@
+import { sendMessageToTab } from "./helpers/messageHelper";
 import {
     getPausedSites,
     isTrackerPaused,
@@ -7,21 +8,18 @@ import {
 
 // Следим за переключением вкладок
 chrome.tabs.onActivated.addListener((activeInfo) => {
-    chrome.tabs.get(activeInfo.tabId, (tab) => {
+    chrome.tabs.get(activeInfo.tabId, async (tab) => {
         if (tab.url) {
             const domain = new URL(tab.url).hostname;
             chrome.storage.local.set({ lastVisitedSite: domain });
-            chrome.tabs.sendMessage(activeInfo.tabId, { type: "UPDATE_SITE", site: domain }, () => {
-                if (chrome.runtime.lastError) {
-                    console.warn(
-                        "Контент-скрипт не получил UPDATE_SITE:",
-                        chrome.runtime.lastError.message,
-                    );
-                } else {
-                    console.log("Контент-скрипт принял UPDATE_SITE");
-                }
+
+            const response = await sendMessageToTab(activeInfo.tabId, {
+                type: "UPDATE_SITE",
+                site: domain,
             });
-            console.log(`🌍 Переключение на: ${domain}`);
+
+            if (response !== null) console.log("✅ Content script accepted UPDATE_SITE");
+            console.log(`🌍 Switched to: ${domain}`);
         }
     });
 });
