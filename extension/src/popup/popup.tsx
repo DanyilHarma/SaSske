@@ -14,7 +14,7 @@ const Popup: FC = () => {
     }, []);
 
     return (
-        <div className="p-4">
+        <div className="w-28 p-4">
             <h1>Время на {site}</h1>
             <TrackerButtons site={site} />
         </div>
