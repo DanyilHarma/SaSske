@@ -1,5 +1,6 @@
 const defaultValues = {
     lastVisitedSite: null as string | null,
+    trackerPaused: false as boolean,
 };
 
 // Типы ключей и значений

@@ -1,8 +1,10 @@
 import ReactDOM from "react-dom/client";
 import "../index.css";
-import { useEffect, useState } from "react";
 import { getStorageValue, subscribeToStorageChanges } from "./services/storageService";
-const Popup = () => {
+import { FC, useEffect, useState } from "react";
+import TrackerButtons from "./trackerButtons/TrackerButtons";
+
+const Popup: FC = () => {
     const [site, setSite] = useState<string | null>(null);
 
     useEffect(() => {
@@ -12,8 +14,9 @@ const Popup = () => {
     }, []);
 
     return (
-        <div>
+        <div className="p-4">
             <h1>Время на {site}</h1>
+            <TrackerButtons site={site} />
         </div>
     );
 };
