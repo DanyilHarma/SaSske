@@ -1,3 +1,4 @@
+import { MessageType } from "../../constants/messageTypes";
 import { throttle } from "../utils/utils";
 
 let lastInteraction = Date.now();
@@ -52,7 +53,7 @@ const sendTimeToBackground = () => {
     const timeSpent = Math.round(activeTime / 1000);
     if (timeSpent > 0) {
         chrome.runtime.sendMessage({
-            type: "SAVE_TIME",
+            type: MessageType.SAVE_TIME,
             site: currentSite,
             timeSpent,
         });
