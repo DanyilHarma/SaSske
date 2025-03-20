@@ -1,3 +1,4 @@
+import { MessageType } from "../constants/messageTypes";
 import { sendMessageToTab } from "./helpers/messageHelper";
 import { handleMessage } from "./services/messageHandler";
 
@@ -9,7 +10,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
             chrome.storage.local.set({ lastVisitedSite: domain });
 
             const response = await sendMessageToTab(activeInfo.tabId, {
-                type: "UPDATE_SITE",
+                type: MessageType.UPDATE_SITE,
                 site: domain,
             });
 
