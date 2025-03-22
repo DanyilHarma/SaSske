@@ -6,7 +6,7 @@
         "start": "node dist/server.js",
         "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
         "build": "tsc -p tsconfig.build.json",
-        "migrate": "dotenv -e ../.env -- npx prisma migrate dev --name init"
+        "migrate": "dotenv -e .env -- npx prisma migrate dev --name init"
     },
     "keywords": [],
     "author": "",
