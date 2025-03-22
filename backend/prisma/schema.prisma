@@ -16,3 +16,10 @@ model User {
   name String?
   createdAd DateTime @default(now())
 }
+
+model SiteState {
+  id String @id @default(uuid())
+  site String
+  timeSpent Int
+  createdAt DateTime @default(now()) 
+}
