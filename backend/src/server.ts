@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import siteStatRouter from "./routes/siteStat.routes";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ app.use(express.json()); // Позволяет работать с JSON в за�
 app.use(cors()); // Разрешаем CORS
 app.use(helmet()); // Защищаем API
 app.use(morgan("dev")); // Логируем запросы
+
+app.use("/api", siteStatRouter);
 
 // Тестовый маршрут
 app.get("/", (req, res) => {
