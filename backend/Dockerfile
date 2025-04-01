@@ -7,8 +7,9 @@ WORKDIR /app
 # Устанавливаем NODE_ENV в development
 ENV NODE_ENV=development
 
-# Копируем файлы package.json и package-lock.json в контейнер
-COPY package*.json package-lock.json ./
+# Копируем явно package.json и package-lock.json
+COPY package.json .
+COPY package-lock.json .
 
 # Устанавливаем зависимости
 RUN npm install
