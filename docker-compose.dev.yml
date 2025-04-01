@@ -48,7 +48,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules  # Чтобы не затереть зависимости
-    command: npm run dev  # Автообновление кода
+    entrypoint: ["sh", "entrypoint.dev.sh"]
 
   # Frontend Service (Next.js)
   frontend:

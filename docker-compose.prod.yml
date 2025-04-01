@@ -46,7 +46,7 @@ services:
       - .env
     environment:
       NODE_ENV: production
-    command: sh -c "npm run build && npm run start"
+    entrypoint: ["sh", "entrypoint.prod.sh"]
 
   # Frontend Service (Next.js)
   frontend:

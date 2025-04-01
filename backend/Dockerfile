@@ -1,5 +1,5 @@
 # Базовый образ с Node.js (используем официальную версию LTS)
-FROM node:18-alpine 
+FROM node:18-alpine
 
 # Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
@@ -14,14 +14,14 @@ COPY package-lock.json .
 # Устанавливаем зависимости
 RUN npm install
 
-# Копируем весь код проекта в контейнер
+# Копируем весь код проекта
 COPY . .
 
-# Компилируем TypeScript перед запуском
-RUN npm run build
+# Делаем entrypoint-скрипты исполняемыми
+RUN chmod +x entrypoint.dev.sh entrypoint.prod.sh
+
+# Указываем точку входа (можно переопределить в docker-compose)
+ENTRYPOINT ["sh", "entrypoint.dev.sh"]
 
 # Открываем порт, который будет использоваться внутри контейнера
 EXPOSE 5000
-
-# Запускаем сервер
-CMD ["npm", "run", "dev"]
