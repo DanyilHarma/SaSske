@@ -18,7 +18,7 @@ RUN npm install
 COPY . .
 
 # Делаем entrypoint-скрипты исполняемыми
-RUN chmod +x entrypoint.dev.sh entrypoint.prod.sh
+RUN chmod +x entrypoint.dev.sh entrypoint.prod.sh entrypoint.studio.sh
 
 # Указываем точку входа (можно переопределить в docker-compose)
 ENTRYPOINT ["sh", "entrypoint.dev.sh"]

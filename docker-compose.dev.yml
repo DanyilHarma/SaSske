@@ -28,6 +28,26 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   ###################################################
+  # Prisma Studio Service (Development Only)
+  #
+  # - Web UI for browsing and editing database records.
+  # - Launched from backend source to access Prisma Client and schema.prisma.
+  # - Runs on port 5555 (http://localhost:5555).
+  # - This service is only used in development mode and excluded in production.
+  ###################################################
+  prisma-studio:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5555:5555"
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+    entrypoint: ["sh","entrypoint.studio.sh"]
+
+  ###################################################
   # Backend Service (Node.js + Express)
   #
   # - Runs our backend API inside a Docker container.
