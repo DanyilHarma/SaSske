@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Wait for DB to be ready
+echo "⏳ Waiting for database to be ready..."
+./scripts/wait-for-it.sh db:5432 --timeout=30 --strict --
+
 # Устанавливаем зависимости, если node_modules нет
 if [ ! -d "node_modules" ]; then
   echo "📦 Installing node modules..."
