@@ -4,6 +4,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import siteStatRouter from "./routes/siteStat.routes";
+import { swaggerSpec } from "./config/swagger";
+import swaggerUi from "swagger-ui-express";
 
 dotenv.config();
 
@@ -14,6 +16,9 @@ app.use(express.json()); // Позволяет работать с JSON в за�
 app.use(cors()); // Разрешаем CORS
 app.use(helmet()); // Защищаем API
 app.use(morgan("dev")); // Логируем запросы
+
+// Documentation API(Swagger)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api", siteStatRouter);
 
