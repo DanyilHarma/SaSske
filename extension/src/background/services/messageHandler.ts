@@ -1,6 +1,6 @@
 import { MessageType } from "../../constants/messageTypes";
 import { IMessage } from "../types/message";
-import { saveTime } from "./storageServiceBackground";
+import { createOrUpdateSiteStat } from "./storageServiceBackground";
 import {
     getPausedSites,
     isTrackerPaused,
@@ -60,7 +60,7 @@ export const handleMessage = (
                 );
                 return false;
             }
-            saveTime(message.site, message.timeSpent);
+            createOrUpdateSiteStat(message.site, message.timeSpent);
             sendResponse({ success: true });
             return true;
 
