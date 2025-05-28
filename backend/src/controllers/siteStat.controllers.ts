@@ -1,6 +1,6 @@
 import { siteStatSchema } from "../utils/validators/siteStat.schema";
 import { Request, Response } from "express";
-import { saveTime } from "../services/timeService";
+import { saveOrUpdateTime } from "../services/timeService";
 
 export const createSiteStat = async (req: Request, res: Response) => {
     try {
@@ -13,7 +13,7 @@ export const createSiteStat = async (req: Request, res: Response) => {
 
         const { site, timeSpent } = parseResult.data;
 
-        const created = await saveTime(site, timeSpent);
+        const created = await saveOrUpdateTime(site, timeSpent);
 
         res.status(201).json(created);
     } catch (error) {
