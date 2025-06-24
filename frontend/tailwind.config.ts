@@ -5,6 +5,7 @@ export default {
     darkMode: ["class"],
     content: [
         "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/entities/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/shared/ui/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
