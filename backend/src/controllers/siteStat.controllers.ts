@@ -1,6 +1,6 @@
 import { siteStatSchema } from "../utils/validators/siteStat.schema";
 import { Request, Response } from "express";
-import { saveOrUpdateTime } from "../services/timeService";
+import { getAllSiteStats, saveOrUpdateTime } from "../services/timeService";
 
 export const createSiteStat = async (req: Request, res: Response) => {
     try {
@@ -18,5 +18,14 @@ export const createSiteStat = async (req: Request, res: Response) => {
         res.status(201).json(created);
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const getSiteStat = async (req: Request, res: Response) => {
+    try {
+        const stats = await getAllSiteStats();
+        res.status(200).json(stats);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to retrieve site stats" });
     }
 };

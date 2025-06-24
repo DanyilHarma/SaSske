@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createSiteStat } from "../controllers/siteStat.controllers";
+import { createSiteStat, getSiteStat } from "../controllers/siteStat.controllers";
 
 const router = Router();
 
@@ -30,8 +30,32 @@ const router = Router();
  *         description: Invalid input
  *       500:
  *         description: Server error
+ *   get:
+ *     summary: Get all site statistics
+ *     tags: [SiteStat]
+ *     responses:
+ *       200:
+ *         description: A list of site time entries
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   site:
+ *                     type: string
+ *                   timeSpent:
+ *                     type: integer
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *       500:
+ *         description: Server error
  */
 
 router.post("/site-stat", createSiteStat);
-console.log(createSiteStat);
+router.get("/site-stat", getSiteStat);
 export default router;

@@ -14,3 +14,11 @@ export const saveOrUpdateTime = async (site: string, timeSpent: number) => {
         });
     }
 };
+
+export const getAllSiteStats = async () => {
+    return prisma.siteState.findMany({
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+};
